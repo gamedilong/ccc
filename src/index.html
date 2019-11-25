@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <div class="head">
+            <div class="desc"><strong>ccc</strong>一款极简中文代码解释器</div>
+            <div class="demo">
+                <p>点击查看示例:</p>
+                <ul id="demos"></ul>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="item">
+                <div class="title">代码区</div>
+                <div class="editor" id="editor"></div>
+                <button onclick="doExe()">执行</button>
+            </div>
+            <div class="line"></div>        
+            <div class="item">
+                <div class="title">语法树</div>
+                <div class="con">
+                    <div id="ast">
+                    </div>
+                </div>
+                <div class="con output-area">
+                    <div class="tools">
+                        <span>输出框</span>
+                        <button onclick="clearOutput()" class="clear">清除</button>
+                    </div>
+                    <div id="output">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="./language.config.js"></script>
+    <script src="./vs/loader.js"></script>
+    <script>
+        window.editor = null         
+        require.config({ paths: { 'vs': 'vs' }});
+        require(['vs/editor/editor.main'], function() {
+            monaco.languages.register({ id: 'cccluanguage' });
+            // Register a tokens provider for the language
+            monaco.languages.setMonarchTokensProvider('cccluanguage',cccLanguageConfig);
+            window.editor = monaco.editor.create(document.getElementById('editor'), {
+                language: 'cccluanguage',
+                theme: 'vs-dark'
+            });
+        });
+    </script>
+    <script src="./ccc.js"></script>
+    <script src="./language.demo.js"></script>
+    <script src="./content.js"></script>
+    <script>
+        window.onload = function() {
+            global.initDemo()
+        }
+        function clearOutput() {
+            global.methods.clearOutPut();
+        }
+        function doExe() {
+            let source = window.editor.getValue()
+            if(!source) return;
+            try{
+                var ast = parse(source);
+                global.methods.showAst(ast);
+                var code = generateCode(ast);
+                console.log(code)
+                eval(code)
+            }catch(e){
+                // 输出日志
+                global.methods.err(e);
+                throw e;
+            }
+        }
+    </script>
+</html>
