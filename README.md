@@ -1,7 +1,9 @@
 # ccc
 
 #### 介绍
-**ccc** 是一款简单的中文代码解释器，将中文代码解析成抽象语法树，并编译成js代码执行
+**ccc** 是一款简单的中文代码解释器，将中文代码解析成抽象语法树，并编译成js代码执行 [在线演示](https://gamedilong.github.io/ccc/src/index.html)
+
+![](https://user-gold-cdn.xitu.io/2019/11/25/16ea333c6822a4d8?w=2406&h=1218&f=png&s=196543)
 
 ### 架构
 1. 语法解析器 -> ccc.js 参考修改于acron.js第一个git log提交版本
